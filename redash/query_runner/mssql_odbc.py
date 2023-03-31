@@ -126,6 +126,7 @@ class SQLServerODBC(BaseSQLQueryRunner):
                     connection_string += ";TrustServerCertificate=YES"
 
             connection = pyodbc.connect(connection_string)
+            connection.autocommit = True
             cursor = connection.cursor()
             logger.debug("SQLServerODBC running query: %s", query)
             cursor.execute(query)
