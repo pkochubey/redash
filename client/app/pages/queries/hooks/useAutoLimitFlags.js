@@ -3,26 +3,22 @@ import localOptions from "@/lib/localOptions";
 import { get, extend } from "lodash";
 
 function isAutoLimitAvailable(dataSource) {
-  const isSupportAutoLimit = get(dataSource, "supports_auto_limit", false)
-
-  if (dataSource == null){
-    return isSupportAutoLimit
-  }
-
-  if (isSupportAutoLimit)
-  {
-    return isSupportAutoLimit
-  }
-
-  localOptions.set("applyAutoLimit", isSupportAutoLimit);
-
-  return isSupportAutoLimit;
+  return get(dataSource, "supports_auto_limit", false);
 }
 
 export default function useAutoLimitFlags(dataSource, query, setQuery) {
   const isAvailable = isAutoLimitAvailable(dataSource);
   const [isChecked, setIsChecked] = useState(query.options.apply_auto_limit);
   query.options.apply_auto_limit = isChecked;
+
+  if (isAvailable && isChecked) {
+    localOptions.set("applyAutoLimit", true);
+  }
+  
+  if (!isAvailable) {
+    query.options.apply_auto_limit = false
+    localOptions.set("applyAutoLimit", false);
+  }
 
   const setAutoLimit = useCallback(
     state => {
