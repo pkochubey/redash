@@ -189,7 +189,7 @@ export class Query {
   }
 
   getAutoLimit() {
-    return this.options.apply_auto_limit;
+    return localOptions.get("applyAutoLimit", true);
   }
 
   getParametersDefs(update = true) {
