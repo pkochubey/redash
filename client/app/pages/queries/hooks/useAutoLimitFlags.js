@@ -4,8 +4,17 @@ import { get, extend } from "lodash";
 
 function isAutoLimitAvailable(dataSource) {
   const isSupportAutoLimit = get(dataSource, "supports_auto_limit", false)
-  if (!isSupportAutoLimit){
-    localOptions.set("applyAutoLimit", false);
+
+  if (dataSource == null){
+    return isSupportAutoLimit
+  }
+
+  const oldApplyAutoLimit = localOptions.get("applyAutoLimit", true);
+
+  localOptions.set("applyAutoLimit", isSupportAutoLimit);
+
+  if (isSupportAutoLimit && !oldApplyAutoLimit){
+    localOptions.set("applyAutoLimit", oldApplyAutoLimit);
   }
 
   return isSupportAutoLimit;
