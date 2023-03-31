@@ -9,13 +9,12 @@ function isAutoLimitAvailable(dataSource) {
     return isSupportAutoLimit
   }
 
-  const oldApplyAutoLimit = localOptions.get("applyAutoLimit", true);
+  if (isSupportAutoLimit)
+  {
+    return isSupportAutoLimit
+  }
 
   localOptions.set("applyAutoLimit", isSupportAutoLimit);
-
-  if (isSupportAutoLimit && !oldApplyAutoLimit){
-    localOptions.set("applyAutoLimit", oldApplyAutoLimit);
-  }
 
   return isSupportAutoLimit;
 }
