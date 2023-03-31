@@ -69,6 +69,10 @@ class SQLServerODBC(BaseSQLQueryRunner):
     def type(cls):
         return "mssql_odbc"
 
+    @property
+    def supports_auto_limit(self):
+        return False
+    
     def _get_tables(self, schema):
         query = """
         SELECT table_schema, table_name, column_name
@@ -142,7 +146,8 @@ class SQLServerODBC(BaseSQLQueryRunner):
             else:
                 error = "No data was returned."
                 json_data = None
-
+                
+            connection.commit()
             cursor.close()
         except pyodbc.Error as e:
             try:
